@@ -1,17 +1,19 @@
 import {
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
   type ChangeEvent,
 } from 'react'
 import {
-  importBook,
+  importFile,
   loadLibrary,
   saveLibrary,
   subscribeLibrary,
   type Book,
   type LibraryState,
+  supportedBookFile,
 } from './library.ts'
 import { useDarkTheme } from './theme.ts'
 
@@ -44,7 +46,12 @@ export function NovelViewPage() {
     Math.max(0, (activeBook?.chapters.length ?? 1) - 1),
   )
   const chapter = activeBook?.chapters[chapterIndex]
+  const pageRef = useRef<HTMLDivElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+
+  useLayoutEffect(() => {
+    pageRef.current?.scrollTo({ top: 0, behavior: 'auto' })
+  }, [activeBook?.id, chapterIndex])
 
   useEffect(() => {
     if (activeBook === undefined || library.progress?.bookId === activeBook.id) return
@@ -66,7 +73,6 @@ export function NovelViewPage() {
       ...state,
       progress: { bookId: activeBook.id, chapterIndex: nextIndex },
     }))
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   async function importFiles(event: ChangeEvent<HTMLInputElement>): Promise<void> {
@@ -78,7 +84,10 @@ export function NovelViewPage() {
     try {
       const imported: Book[] = []
       for (const file of files) {
-        imported.push(importBook(file.name, await file.text()))
+        if (!supportedBookFile(file.name, file.type)) {
+          throw new Error(`不支持的电子书格式：${file.name}`)
+        }
+        imported.push(await importFile(file.name, file))
       }
       updateLibrary(state => ({
         ...state,
@@ -100,7 +109,7 @@ export function NovelViewPage() {
   }
 
   return (
-    <div className={`nv-page ${dark ? 'nv-dark' : 'nv-light'}`}>
+    <div ref={pageRef} className={`nv-page ${dark ? 'nv-dark' : 'nv-light'}`}>
       <div className="nv-shell">
         <header className="nv-header">
           <div className="nv-title-group">
@@ -149,7 +158,7 @@ export function NovelViewPage() {
               ref={fileRef}
               className="nv-hidden"
               type="file"
-              accept=".txt,.md,.markdown,text/plain,text/markdown"
+              accept=".txt,.md,.markdown,.epub,text/plain,text/markdown,application/epub+zip"
               multiple
               onChange={event => { void importFiles(event) }}
             />
@@ -201,8 +210,23 @@ export function NovelViewPage() {
                   上一章
                 </button>
                 <div className="nv-composer-context">
-                  <strong>{activeBook.title}</strong>
-                  <span>{chapterIndex + 1} / {activeBook.chapters.length}</span>
+                  <strong title={activeBook.title}>{activeBook.title}</strong>
+                  <label className="nv-chapter-jump">
+                    <span className="nv-chapter-jump-label">跳转到</span>
+                    <select
+                      className="nv-chapter-select"
+                      aria-label="跳转到章节"
+                      value={chapterIndex}
+                      onChange={event => changeChapter(Number(event.target.value))}
+                    >
+                      {activeBook.chapters.map((candidate, index) => (
+                        <option key={candidate.id} value={index}>
+                          {index + 1}. {candidate.title}
+                        </option>
+                      ))}
+                    </select>
+                    <span>/ {activeBook.chapters.length}</span>
+                  </label>
                 </div>
                 <button
                   type="button"
@@ -269,7 +293,10 @@ export function NovelViewSettings() {
     try {
       const imported: Book[] = []
       for (const file of files) {
-        imported.push(importBook(file.name, await file.text()))
+        if (!supportedBookFile(file.name, file.type)) {
+          throw new Error(`不支持的电子书格式：${file.name}`)
+        }
+        imported.push(await importFile(file.name, file))
       }
       if (imported.length > 0) {
         updateLibrary(state => ({
@@ -311,7 +338,7 @@ export function NovelViewSettings() {
           ref={fileRef}
           className="nv-hidden"
           type="file"
-          accept=".txt,.md,.markdown,text/plain,text/markdown"
+          accept=".txt,.md,.markdown,.epub,text/plain,text/markdown,application/epub+zip"
           multiple
           onChange={event => { void importFiles(event) }}
         />
@@ -322,7 +349,10 @@ export function NovelViewSettings() {
             <div key={book.id} className="nv-library-item">
               <span>
                 <strong>{book.title}</strong>
-                <small>{book.chapters.length} 章 · {book.format.toUpperCase()}</small>
+                <small>
+                  {book.author === undefined ? '' : `${book.author} · `}
+                  {book.chapters.length} 章 · {book.format.toUpperCase()}
+                </small>
               </span>
               <div className="nv-library-actions">
                 <button type="button" className="nv-button" onClick={() => removeBook(book)}>移除</button>

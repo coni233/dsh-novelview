@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "NovelView",
-    "description": "Read local TXT and Markdown books as a conversation-style stream."
+    "description": "Read local TXT, Markdown, and EPUB books as a conversation-style stream."
   }
 }

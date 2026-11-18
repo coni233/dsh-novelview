@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "NovelView",
-    "description": "在 DeepSeek Harness 中以对话形式阅读本地 TXT 和 Markdown 电子书。"
+    "description": "在 DeepSeek Harness 中以对话形式阅读本地 TXT、Markdown 和 EPUB 电子书。"
   }
 }

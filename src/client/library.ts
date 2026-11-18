@@ -1,4 +1,6 @@
-export type BookFormat = 'txt' | 'markdown'
+import { parseEpub } from './epub.ts'
+
+export type BookFormat = 'txt' | 'markdown' | 'epub'
 
 export interface Chapter {
   id: string
@@ -9,6 +11,7 @@ export interface Chapter {
 export interface Book {
   id: string
   title: string
+  author?: string
   format: BookFormat
   importedAt: string
   chapters: Chapter[]
@@ -104,6 +107,28 @@ export function importBook(name: string, text: string): Book {
     importedAt: new Date().toISOString(),
     chapters,
   }
+}
+
+export async function importFile(name: string, file: File): Promise<Book> {
+  if (/\.epub$/i.test(name) || file.type === 'application/epub+zip') {
+    const parsed = await parseEpub(name, await file.arrayBuffer())
+    return {
+      id: createId(),
+      title: parsed.title,
+      ...(parsed.author === undefined ? {} : { author: parsed.author }),
+      format: 'epub',
+      importedAt: new Date().toISOString(),
+      chapters: parsed.chapters,
+    }
+  }
+  return importBook(name, await file.text())
+}
+
+export function supportedBookFile(name: string, type = ''): boolean {
+  return /\.(?:txt|md|markdown|epub)$/i.test(name)
+    || type === 'text/plain'
+    || type === 'text/markdown'
+    || type === 'application/epub+zip'
 }
 
 export function splitChapters(text: string, format: BookFormat): Chapter[] {

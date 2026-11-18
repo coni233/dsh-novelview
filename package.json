@@ -1,7 +1,7 @@
 {
   "name": "dsh-novelview",
-  "version": "0.1.0",
-  "description": "A local-first, conversation-style e-book reader for DeepSeek Harness.",
+  "version": "0.2.5",
+  "description": "A local-first TXT, Markdown, and EPUB reader for DeepSeek Harness.",
   "author": "coni233",
   "repository": {
     "type": "git",

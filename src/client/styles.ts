@@ -22,7 +22,14 @@ export function installStyles(): void {
       --nv-on-accent: var(--dsw-alias-label-on-color, #ffffff);
       --nv-error: var(--dsw-alias-state-error-primary, #d1242f);
       --nv-shadow: var(--dsw-elevation-panel, 0 8px 28px rgb(0 0 0 / 8%));
+      position: relative;
+      height: 100%;
       min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      -webkit-overflow-scrolling: touch;
       color: var(--nv-text);
       background: var(--nv-bg);
     }
@@ -237,12 +244,37 @@ export function installStyles(): void {
       font-size: 12px;
     }
     .nv-composer-context strong {
-      max-width: 45%;
+      max-width: 32%;
       color: var(--nv-text-secondary);
       font-weight: 500;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    .nv-chapter-jump {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .nv-chapter-jump-label { color: var(--nv-text-tertiary); }
+    .nv-chapter-select {
+      min-width: 0;
+      max-width: 260px;
+      min-height: 30px;
+      padding: 4px 28px 4px 9px;
+      border: 0.5px solid var(--nv-border-2);
+      border-radius: 8px;
+      color: var(--nv-text-secondary);
+      background: var(--nv-layer-2);
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .nv-chapter-select:focus-visible {
+      outline: 1px solid var(--nv-accent);
+      outline-offset: 1px;
     }
     .nv-settings {
       display: grid;
@@ -325,6 +357,8 @@ export function installStyles(): void {
       .nv-user-row { padding-left: 36px; }
       .nv-composer-dock { padding-inline: 16px; margin-inline: -16px; }
       .nv-composer-context strong { display: none; }
+      .nv-chapter-jump-label { display: none; }
+      .nv-chapter-select { max-width: 150px; }
       .nv-toolbar { width: 100%; margin-left: 0; }
     }
   `

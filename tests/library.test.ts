@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { loadLibrary, splitChapters } from '../src/client/library.ts'
+import {
+  loadLibrary,
+  splitChapters,
+  supportedBookFile,
+} from '../src/client/library.ts'
+import { normalizeZipPath } from '../src/client/epub.ts'
 
 test('splits common Chinese chapter headings', () => {
   const chapters = splitChapters(
@@ -63,4 +68,17 @@ test('restores the exact default width after slider quantization', () => {
   } as Storage
 
   assert.deepEqual(loadLibrary().settings, { fontSize: 14, readingWidth: 748 })
+})
+
+test('recognizes EPUB files for import', () => {
+  assert.equal(supportedBookFile('novel.epub'), true)
+  assert.equal(supportedBookFile('book.bin', 'application/epub+zip'), true)
+  assert.equal(supportedBookFile('cover.jpg', 'image/jpeg'), false)
+})
+
+test('normalizes paths inside an EPUB archive', () => {
+  assert.equal(
+    normalizeZipPath('OEBPS/Text/../Images/./cover.jpg'),
+    'OEBPS/Images/cover.jpg',
+  )
 })
