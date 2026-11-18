@@ -1,0 +1,72 @@
+{
+  "name": "dsh-novelview",
+  "version": "0.1.11",
+  "description": "A local-first, conversation-style e-book reader for DeepSeek Harness.",
+  "author": "coni233",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coni233/dsh-novelview.git"
+  },
+  "homepage": "https://github.com/coni233/dsh-novelview#readme",
+  "bugs": {
+    "url": "https://github.com/coni233/dsh-novelview/issues"
+  },
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib/client.js",
+    "lib/client.js.map",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "engines": {
+    "node": ">=24.9.0",
+    "dsh": ">=0.2.0-0 <0.3.0"
+  },
+  "scripts": {
+    "build": "pnpm run test && pnpm run typecheck && tsdown",
+    "build:client": "tsdown",
+    "test": "node --test tests/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pack:check": "pnpm run build && npm pack --dry-run",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.1 <5"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.1.0",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "tsdown": "0.22.2",
+    "typescript": "^6.0.3"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "ebook",
+    "reader"
+  ],
+  "license": "MIT"
+}
