@@ -230,7 +230,7 @@ export function NovelViewPage() {
                 </div>
                 <button
                   type="button"
-                  className="nv-composer-button nv-composer-next"
+                  className="nv-composer-button"
                   disabled={chapterIndex >= activeBook.chapters.length - 1}
                   onClick={() => changeChapter(chapterIndex + 1)}
                 >

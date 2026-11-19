@@ -26,7 +26,7 @@ DSH 对话的版式展示章节内容，并支持在设置页导入本地电子�
 在 DeepSeek Harness 中打开“插件” → “添加插件”，输入：
 
 ```text
-dsh-novelview@0.2.5
+dsh-novelview@0.2.7
 ```
 
 也可以不指定版本：

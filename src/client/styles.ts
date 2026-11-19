@@ -20,6 +20,8 @@ export function installStyles(): void {
       --nv-border-3: var(--dsw-alias-border-l3, rgb(0 0 0 / 18%));
       --nv-accent: var(--dsw-alias-state-business-primary, #3b7cff);
       --nv-on-accent: var(--dsw-alias-label-on-color, #ffffff);
+      --nv-user-bubble: color-mix(in srgb, var(--nv-accent) 13%, var(--nv-bg));
+      --nv-user-bubble-border: color-mix(in srgb, var(--nv-accent) 8%, var(--nv-bg));
       --nv-error: var(--dsw-alias-state-error-primary, #d1242f);
       --nv-shadow: var(--dsw-elevation-panel, 0 8px 28px rgb(0 0 0 / 8%));
       position: relative;
@@ -48,6 +50,8 @@ export function installStyles(): void {
       --nv-border-3: rgb(255 255 255 / 18%);
       --nv-accent: var(--dsw-static-deepseek-400, #7aaaff);
       --nv-on-accent: var(--dsw-static-neutral-bluish-950, #131417);
+      --nv-user-bubble: color-mix(in srgb, var(--nv-accent) 15%, var(--nv-layer-1));
+      --nv-user-bubble-border: color-mix(in srgb, var(--nv-accent) 10%, var(--nv-layer-1));
       --nv-error: var(--dsw-static-red-400, #ff7b81);
       --nv-shadow: 0 8px 28px rgb(0 0 0 / 28%);
     }
@@ -118,10 +122,11 @@ export function installStyles(): void {
     .nv-user-bubble {
       max-width: 520px;
       padding: 12px 18px;
+      border: 0.5px solid var(--nv-user-bubble-border);
       border-radius: 18px;
       border-bottom-right-radius: 6px;
       color: var(--nv-text);
-      background: color-mix(in srgb, var(--nv-layer-2) 88%, var(--nv-bg));
+      background: var(--nv-user-bubble);
       font-size: 14px;
       line-height: 22px;
       overflow-wrap: anywhere;
@@ -228,10 +233,6 @@ export function installStyles(): void {
       color: var(--nv-text-tertiary);
       cursor: not-allowed;
       opacity: .5;
-    }
-    .nv-composer-next {
-      color: var(--nv-text);
-      background: var(--nv-layer-2);
     }
     .nv-composer-context {
       display: flex;

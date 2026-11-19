@@ -29,9 +29,17 @@ function NovelViewIcon({ size = 16 }: { size?: number }): ReactNode {
     >
       <path
         d="M4.5 4.5c0-1.1.9-2 2-2H20v16H6.5a2 2 0 0 0-2 2v-16Z"
-        fill="currentColor"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
       />
-      <path d="M6.5 18.5H20M8 6h8M8 9.5h8M8 13h5" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        d="M6.5 18.5H20M8 6h8M8 9.5h8M8 13h5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }
