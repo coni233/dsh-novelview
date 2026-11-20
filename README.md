@@ -5,6 +5,8 @@ DSH 对话的版式展示章节内容，并支持在设置页导入本地电子�
 
 > 当前处于早期开发阶段，支持 TXT、Markdown 和 EPUB。
 
+![NovelView 阅读界面：对话式章节排版、章节选择器和底部翻页栏](docs/screenshot.png)
+
 ## 功能
 
 - 在设置页导入 TXT、Markdown 和 EPUB 电子书
